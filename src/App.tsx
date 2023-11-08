@@ -1,65 +1,102 @@
-import React, { useState } from 'react';
-import './App.css';
-import { Button, TextField } from '@mui/material';
+import React, { useState } from "react";
+import "./App.css";
+import { Button, TextField } from "@mui/material";
 
 function App() {
   const [attackerArmy, setAttackerArmy] = useState(10);
   const [distributorArmy, setDistributorArmy] = useState(7);
-  const [winner, setWinner] = useState<string>();
-
+  const [attackedRemainedArmy, setAttackedRemainedArmy] = useState<number>(0);
+  const [distributorRemainedArmy, setDistributorRemainedArmy] =
+    useState<number>(0);
 
   const throwDice = () => {
     let currentAttackerArmy = attackerArmy;
     let currentDistributorArmy = distributorArmy;
+    const rollDice = (length: number) =>
+      Array.from({ length }, () => Math.floor(Math.random() * 5) + 1);
 
     while (true) {
-      let attackerDice = currentAttackerArmy >= 3 ? 3 : currentAttackerArmy === 2 ? 2 : 1;
-      let distributorDice = currentDistributorArmy >= 2 ? 2 : 1;
+      // Get the current allowed dices
+      const attackerDice = Math.min(currentAttackerArmy, 3);
+      const distributorDice = Math.min(currentDistributorArmy, 2);
 
-      const attackerScore = Array.from({ length: attackerDice }, () => 1).map((i) => {
-        return (Math.floor(Math.random() * 5) + 1) + i;
-      });
+      // Roll the dice and sort the from highest to lowest
+      // Relevant are the first two dices for the following comparison
+      const attackerScore = rollDice(attackerDice).sort((a, b) => b - a);
+      const distributorScore = rollDice(distributorDice).sort((a, b) => b - a);
 
-      const distributorScore = Array.from({ length: distributorDice }, () => 1).map((i) => {
-        return (Math.floor(Math.random() * 5) + 1) + i;
-      });
-
-      const firstAttackerDice = Math.max(...attackerScore);
-      const secondAttackerDice = attackerScore.sort((a, b) => b - a)[1];
-
-      const firstDistributorDice = Math.max(...distributorScore);
-      const secondDistributorDice = distributorScore.sort((a, b) => b - a)[1];
-  
-      if(firstDistributorDice >= firstAttackerDice) {
+      if (distributorScore[0] >= attackerScore[0]) {
         currentAttackerArmy--;
       } else {
         currentDistributorArmy--;
       }
 
-      if(currentAttackerArmy <= 0 || currentDistributorArmy <= 0) break;
+      if (currentAttackerArmy <= 0 || currentDistributorArmy <= 0) break;
 
-      if(secondDistributorDice >= secondAttackerDice) {
+      if (distributorScore[1] >= attackerScore[1]) {
         currentAttackerArmy--;
       } else {
         currentDistributorArmy--;
       }
 
-      if(currentAttackerArmy <= 0 || currentDistributorArmy <= 0) break;
+      if (currentAttackerArmy <= 0 || currentDistributorArmy <= 0) break;
     }
-    setWinner(currentAttackerArmy > currentDistributorArmy ? "Attacker" : "Distributor");
-  }
+    setAttackedRemainedArmy(currentAttackerArmy);
+    setDistributorRemainedArmy(currentDistributorArmy);
+  };
 
+  const winner =
+    attackedRemainedArmy > distributorRemainedArmy
+      ? "Attacker"
+      : attackedRemainedArmy < distributorRemainedArmy
+      ? "Distributor"
+      : null;
   return (
-    <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%'}}>
-      <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection:'column', gap: '10px'}}>
-        <h1>
-          Risk Dice
-        </h1>
-        <TextField type='number'  label="Attacker Army" variant="outlined"  defaultValue={attackerArmy} onChange={(nv)=>setAttackerArmy(Number(nv.target.value))}/>
-        <TextField type='number' label="Distributor Army" variant="outlined" defaultValue={distributorArmy} onChange={(nv)=>setDistributorArmy(Number(nv.target.value))}/> 
-        <Button variant="contained" onClick={throwDice}>Throw dice!</Button>
-        {winner ? <b>The winner is: {winner}</b> : <b>Find out the winner :)</b>}     
-      </div> 
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        height: "100%",
+      }}
+    >
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          flexDirection: "column",
+          gap: "13px",
+        }}
+      >
+        <h1>Risk Dice</h1>
+        <TextField
+          type="number"
+          label="Attacker Army"
+          variant="outlined"
+          defaultValue={attackerArmy}
+          onChange={(nv) => setAttackerArmy(Number(nv.target.value))}
+        />
+        <TextField
+          type="number"
+          label="Distributor Army"
+          variant="outlined"
+          defaultValue={distributorArmy}
+          onChange={(nv) => setDistributorArmy(Number(nv.target.value))}
+        />
+        <Button variant="contained" onClick={throwDice}>
+          Throw dice!
+        </Button>
+        {winner && (
+          <>
+            <b style={{ textDecoration: "underline" }}>
+              The winner is: {winner}
+            </b>
+            <span>Attacker remained army: {attackedRemainedArmy}</span>
+            <span>Distributor remained army: {distributorRemainedArmy}</span>
+          </>
+        )}
+      </div>
     </div>
   );
 }
