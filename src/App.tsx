@@ -31,7 +31,12 @@ function App() {
         currentDistributorArmy--;
       }
 
-      if (currentAttackerArmy <= 0 || currentDistributorArmy <= 0) break;
+      if (
+        currentAttackerArmy <= 0 ||
+        currentDistributorArmy <= 0 ||
+        (!distributorScore[1] && !attackerScore[1])
+      )
+        break;
 
       if (distributorScore[1] >= attackerScore[1]) {
         currentAttackerArmy--;
