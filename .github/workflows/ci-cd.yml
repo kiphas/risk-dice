@@ -38,6 +38,13 @@ jobs:
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           ssh-keyscan -H ${{ secrets.SSH_HOST }} > ~/.ssh/known_hosts
       - name: connect and pull
-        run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "[ -d ${{ github.repository }} ] || mkdir -p ${{ github.repository }} && cd ${{ github.repository }} && curl -O -L https://github.com/${{ github.repository }}/raw/master/docker-compose-prd.yml && docker compose -f docker-compose-prd.yml pull && docker compose -f docker-compose-prd.yml up -d && exit"
+        run: |
+          ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "\
+          [ -d ${{ github.repository }} ] || mkdir -p ${{ github.repository }} && \
+          cd ${{ github.repository }} && \
+          curl -O -L https://github.com/${{ github.repository }}/raw/master/docker-compose-prd.yml && \
+          docker compose -f docker-compose-prd.yml pull && \
+          docker compose -f docker-compose-prd.yml up -d && \
+          exit"
       - name: cleanup
         run: rm -rf ~/.ssh
