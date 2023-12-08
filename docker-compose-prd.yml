@@ -1,0 +1,6 @@
+services:
+  app:
+    container_name: app
+    image: ghcr.io/nikpetrich/risk-dice:latest
+    ports:
+      - 80:80
