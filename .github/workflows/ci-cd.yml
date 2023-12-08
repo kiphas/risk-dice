@@ -2,10 +2,10 @@ name: publish
 
 on:
   push:
-    branches: ["main"]
+    branches: ["master"]
   pull_request:
     branches:
-      - main
+      - master
 
 env:
   REGISTRY: ghcr.io
