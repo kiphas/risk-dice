@@ -9,7 +9,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.actor }}/sample:latest
+  IMAGE_NAME: ${{ github.actor }}/risk-dice:latest
 
 jobs:
   publish:
