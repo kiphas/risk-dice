@@ -3,4 +3,4 @@ services:
     container_name: app
     image: ghcr.io/nikpetrich/risk-dice:latest
     ports:
-      - 80:80
+      - 1111:80
