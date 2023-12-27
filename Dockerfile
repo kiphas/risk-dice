@@ -1,11 +1,12 @@
+# Build stage
 FROM node:20.10-alpine3.17 as build
 WORKDIR /app
 COPY ./package*.json ./
 RUN npm ci
 COPY . .
 RUN npm run build
-COPY --from=build /app/build /usr/share/nginx/html
 
-# production environment
-FROM alpine:latest
-COPY --from=build /app/build /usr/share/nginx/html/risk-dice
+# Final production stage
+FROM nginx:alpine
+WORKDIR /usr/share/nginx/html
+COPY --from=build /app/build/ .
