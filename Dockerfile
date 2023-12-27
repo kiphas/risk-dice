@@ -8,5 +8,5 @@ RUN npm run build
 
 # Final production stage
 FROM nginx:alpine
-WORKDIR /usr/share/nginx/html
+WORKDIR /usr/share/nginx/html/risk-dice
 COPY --from=build /app/build/ .
