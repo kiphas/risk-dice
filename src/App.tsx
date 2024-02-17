@@ -92,15 +92,13 @@ function App() {
         <Button variant="contained" onClick={throwDice}>
           Throw dice!
         </Button>
-        {winner && (
-          <>
-            <b style={{ textDecoration: "underline" }}>
-              The winner is: {winner}
-            </b>
-            <span>Attacker remained army: {attackedRemainedArmy}</span>
-            <span>Distributor remained army: {distributorRemainedArmy}</span>
-          </>
-        )}
+        <>
+          <b style={{ textDecoration: "underline" }}>
+            The winner is: {winner ?? "?"}
+          </b>
+          <span>Attacker remained army: {attackedRemainedArmy}</span>
+          <span>Distributor remained army: {distributorRemainedArmy}</span>
+        </>
       </div>
     </div>
   );
