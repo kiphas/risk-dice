@@ -42,7 +42,7 @@ jobs:
           ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "\
           [ -d ${{ github.repository }} ] || mkdir -p ${{ github.repository }} && \
           cd ${{ github.repository }} && \
-          curl -O -L https://github.com/${{ github.repository }}/raw/master/docker-compose-prd.yml && \
+          curl -O -L https://raw.githubusercontent.com/${{ github.repository }}/master/docker-compose-prd.yml && \
           docker compose -f docker-compose-prd.yml pull && \
           docker compose -f docker-compose-prd.yml up -d && \
           exit"
