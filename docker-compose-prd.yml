@@ -1,6 +1,6 @@
 services:
   app:
     container_name: app
-    image: ghcr.io/nikpetrich/risk-dice:latest
+    image: ghcr.io/kiphas/risk-dice:latest
     ports:
       - 1111:80
